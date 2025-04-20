@@ -1,0 +1,94 @@
+{
+  "uuid": "ce71d845-0a49-4b6c-889b-b1698cd82373",
+  "lastMigration": 33,
+  "name": "MaintenanceHistory",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 12346,
+  "hostname": "localhost",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "cce47f5e-9739-4e62-8179-94eec74cd8da",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "maintenances",
+      "responses": [
+        {
+          "uuid": "125c7cdd-e623-4e22-bbaf-49ae8b4dba5a",
+          "body": "{\n  \"maintenances\":[\n    {\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 5.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 10.000km\"\n    },\n    {\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 10.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 15.000km\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "cce47f5e-9739-4e62-8179-94eec74cd8da"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}
