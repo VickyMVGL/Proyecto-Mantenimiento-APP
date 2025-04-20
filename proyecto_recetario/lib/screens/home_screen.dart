@@ -1,58 +1,37 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'maintenance_detail.dart';
-import 	'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import '../providers/maintenance_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
         // Android 10.0.2.2
         // IOS 127.0.0.1
         // Web localhost:12346
-  Future<List<dynamic>> FetchMaintenances() async {
-    final url = Uri.parse('http://10.0.2.2:12346/maintenances');
 
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) { 
-        final data = jsonDecode(response.body);
-        return data['maintenances'];
-      } else {
-        print("Error: ${response.statusCode}");
-        return [];
-      }
-    }catch (e) {
-      print("Error: $e");
-      return [];
-    }
-   
-    
-  }
 
   @override
   Widget build(BuildContext context) {
-    FetchMaintenances();
-    return Scaffold(
-      body: FutureBuilder<List<dynamic>>(
+    final maintenancesProvider = Provider.of<MaintenanceProvider>(context, listen: false);
+    maintenancesProvider.FetchMaintenances();
+    maintenancesProvider.FetchMaintenances();
 
-        future: FetchMaintenances(),
-        builder: (context, snapshot){
-          final maintenances = snapshot.data ?? [];
-          
-          if (snapshot.connectionState == ConnectionState.waiting) {
+    return Scaffold(
+      body: Consumer<MaintenanceProvider>(
+
+        builder: (context, provider, child){
+          if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator(),);
-          } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+          } else if (provider.maintenances.isEmpty) {
             return Center(child: Text("No hay mantenimientos"),);
           } else {
             return ListView.builder(
               itemBuilder: (context, index){
-                return _BuildCard(context, maintenances[index]);
+                return _BuildCard(context, provider.maintenances[index]);
               },
-              itemCount:maintenances.length,
+              itemCount:provider.maintenances.length,
               );
-          }
-          
-          
+          }  
         }
         ),
       floatingActionButton: FloatingActionButton(
@@ -87,7 +66,7 @@ class HomeScreen extends StatelessWidget {
   Widget _BuildCard (BuildContext context, dynamic maintenance){
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MaintenanceDetail(maintenanceName: maintenance["maintenance"],)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MaintenanceDetail(maintenanceName: maintenance.maintenance,)));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -110,14 +89,14 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                  Text(maintenance["maintenance"], style: TextStyle(fontSize: 20),),
+                  Text(maintenance.maintenance, style: TextStyle(fontSize: 20),),
                   SizedBox(height: 5,),
                   Container(
                     height: 2,
                     width: 100,
                     color: Colors.deepOrangeAccent,
                   ),
-                  Text(maintenance["car"], style: TextStyle(fontSize: 14)),
+                  Text(maintenance.car, style: TextStyle(fontSize: 14)),
                   SizedBox(height: 5,),
                   
                   ],

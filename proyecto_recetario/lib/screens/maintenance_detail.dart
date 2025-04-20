@@ -16,6 +16,17 @@ class MaintenanceDetail extends StatelessWidget {
         icon: Icon(Icons.arrow_back_ios_new), 
         color: Colors.white,),
       ),
+
+      body: Padding(
+        padding: EdgeInsets.all(18),
+        child: Column(
+          children: [
+            
+          ]
+        ),
+        ),
+
+
     );
   }
 }

@@ -17,7 +17,69 @@
       "responses": [
         {
           "uuid": "125c7cdd-e623-4e22-bbaf-49ae8b4dba5a",
-          "body": "{\n  \"maintenances\":[\n    {\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 5.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"images\": \"../assets/images/suzuki-swift.jpeg\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 10.000km\"\n    },\n    {\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 10.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"images\": \"../assets/images/suzuki-swift.jpeg\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 15.000km\"\n    }\n  ]\n}",
+          "body": "{\n  \"maintenances\":[\n    {\n      \"id\": 1,\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 5.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"images\": \"../assets/images/suzuki-swift.jpeg\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 10.000km\"\n    },\n    {\n      \"id\": 2,\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 10.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"images\": \"../assets/images/suzuki-swift.jpeg\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 15.000km\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "221d9218-f26c-4477-b0b7-ee93fa0ab637",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "important",
+      "responses": [
+        {
+          "uuid": "f2def691-aa5b-465c-bbc0-a238d7272f32",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "99762b8d-d7a3-42d8-ac52-49ce2a6a7a2f",
+      "type": "http",
+      "documentation": "",
+      "method": "delete",
+      "endpoint": "important",
+      "responses": [
+        {
+          "uuid": "9514a529-34e6-44b5-8f69-49b63c9a32de",
+          "body": "{}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -44,6 +106,14 @@
     {
       "type": "route",
       "uuid": "cce47f5e-9739-4e62-8179-94eec74cd8da"
+    },
+    {
+      "type": "route",
+      "uuid": "221d9218-f26c-4477-b0b7-ee93fa0ab637"
+    },
+    {
+      "type": "route",
+      "uuid": "99762b8d-d7a3-42d8-ac52-49ce2a6a7a2f"
     }
   ],
   "proxyMode": false,

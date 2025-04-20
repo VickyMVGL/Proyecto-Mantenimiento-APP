@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../screens/home_screen.dart';
+import '../../providers/maintenance_provider.dart';
 
 void main() => runApp(const MyApp());
 
@@ -8,17 +10,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "hola mundo",
-      home: RecipeBook(),
-      theme: ThemeData(primarySwatch: Colors.deepOrange, fontFamily: 'Roboto'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => MaintenanceProvider(),
+        ),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "hola mundo",
+        home: const MaintenanceHistory(),
+        ),
     );
   }
 }
 
-class RecipeBook extends StatelessWidget {
-  const RecipeBook({super.key});
+class MaintenanceHistory extends StatelessWidget {
+  const MaintenanceHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +35,7 @@ class RecipeBook extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.deepOrangeAccent,
-          title: Text("Recipe Book", style: TextStyle(color: Colors.white)
+          title: Text("Historial de Mantenimiento", style: TextStyle(color: Colors.white)
           ),
           bottom: TabBar(
             indicatorColor: Colors.white,
