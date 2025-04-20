@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../screens/home_screen.dart';
+import '../../screens/ImportantMaintenanceScreen.dart';
 import '../../providers/maintenance_provider.dart';
 
 void main() => runApp(const MyApp());
@@ -42,12 +43,14 @@ class MaintenanceHistory extends StatelessWidget {
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white,
             tabs: [
-            Tab(icon: Icon(Icons.home) , text: "Home",)
+            Tab(icon: Icon(Icons.home) , text: "Inicio",),
+            Tab(icon: Icon(Icons.taxi_alert), text: "Importante",)
           ]),
         ),
         body: TabBarView(
           children: [
             HomeScreen(),
+            ImportantMaintenanceScreen(),
           ],
         )
       ),

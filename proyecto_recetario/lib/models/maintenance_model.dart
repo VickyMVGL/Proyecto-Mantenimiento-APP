@@ -1,4 +1,5 @@
 class Maintenance{
+  int id;
   String maintenance;
   String description;
   String car;
@@ -7,6 +8,7 @@ class Maintenance{
   String notes;
 
   Maintenance({
+    required this.id,
     required this.maintenance,
     required this.description,
     required this.car,
@@ -17,6 +19,7 @@ class Maintenance{
 
   factory Maintenance.fromJson(Map<String, dynamic> json) {
     return Maintenance(
+      id: json['id'],
       maintenance: json['maintenance'],
       description: json['description'],
       car: json['car'],
@@ -39,6 +42,6 @@ class Maintenance{
 
   @override
   String toString() {
-    return 'Maintenance{maintenance: $maintenance, description: $description, car: $car, date: $date, mechanic: $mechanic, notes: $notes}';
+    return 'Maintenance{id: $id, maintenance: $maintenance, description: $description, car: $car, date: $date, mechanic: $mechanic, notes: $notes}';
   }
 }

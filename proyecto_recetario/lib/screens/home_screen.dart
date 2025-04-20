@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
   Widget _BuildCard (BuildContext context, dynamic maintenance){
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MaintenanceDetail(maintenanceName: maintenance.maintenance,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MaintenanceDetail(maintenanceData: maintenance)));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

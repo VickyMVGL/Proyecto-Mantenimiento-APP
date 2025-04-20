@@ -7,6 +7,7 @@ import 'dart:convert';
 class MaintenanceProvider extends ChangeNotifier {
   bool isLoading = false;
   List<Maintenance> maintenances = [];
+  List<Maintenance> importantMaintenance = [];
 
   Future<void> FetchMaintenances() async {
   isLoading = true;
@@ -33,18 +34,30 @@ class MaintenanceProvider extends ChangeNotifier {
   }
 
   Future<void> toogleImportantStatus(Maintenance maintenance) async {
-    final isImportant = _importantMaintenance.contains(maintenance);
+    final isImportant = importantMaintenance.contains(maintenance);
 
     try {
       final url = Uri.parse('http://10.0.2.2:12346/important');
-      response = isImportant
-          ? await http.delete(url, body: json.encode("id": maintenance.id));
-          : await http.post(url, body: maintenance.toJson());
+      final response = isImportant
+          ? await http.delete(url, body: json.encode({"id": maintenance.id}))
+          : await http.post(url, body: json.encode(maintenance.toJson));
+
+          if (response.statusCode == 200) {
+            if (isImportant) {
+              importantMaintenance.remove(maintenance);
+            } else {
+              importantMaintenance.add(maintenance);
+            }
+            notifyListeners();
+
+          } else {
+            throw Exception("Error al cambiar el estado de importante");
+          }
     } catch (e) {
-      print("Error: $e");
+      print("Error al actualizar estatus: $e");
     } finally {
       isLoading = false;
       notifyListeners();
     }
-
+  }
 }
