@@ -5,7 +5,7 @@
   "endpointPrefix": "",
   "latency": 0,
   "port": 12346,
-  "hostname": "localhost",
+  "hostname": "0.0.0.0",
   "folders": [],
   "routes": [
     {
@@ -17,7 +17,7 @@
       "responses": [
         {
           "uuid": "125c7cdd-e623-4e22-bbaf-49ae8b4dba5a",
-          "body": "{\n  \"maintenances\":[\n    {\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 5.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 10.000km\"\n    },\n    {\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 10.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 15.000km\"\n    }\n  ]\n}",
+          "body": "{\n  \"maintenances\":[\n    {\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 5.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"images\": \"../assets/images/suzuki-swift.jpeg\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 10.000km\"\n    },\n    {\n      \"car\": \"Suzuki Swift\",\n      \"maintenance\": \"Cambio de aceite\",\n      \"description\": \"Se realizo el cambio de aceite correspondiente a 10.000km\",\n      \"mechanic\": \"Mecanicos Lopez\",\n      \"images\": \"../assets/images/suzuki-swift.jpeg\",\n      \"date\" : \"2025-01-15\" ,\n      \"notes\": \"Siguiente cambio de aceite a los 15.000km\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
