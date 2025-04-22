@@ -3,19 +3,26 @@ import 'maintenance_detail.dart';
 import 'package:provider/provider.dart';
 import '../providers/maintenance_provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
         // Android 10.0.2.2
         // IOS 127.0.0.1
         // Web localhost:12346
 
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final maintenancesProvider = Provider.of<MaintenanceProvider>(context, listen: false);
+    maintenancesProvider.FetchMaintenances();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final maintenancesProvider = Provider.of<MaintenanceProvider>(context, listen: false);
-    maintenancesProvider.FetchMaintenances();
-    maintenancesProvider.FetchMaintenances();
-
     return Scaffold(
       body: Consumer<MaintenanceProvider>(
 

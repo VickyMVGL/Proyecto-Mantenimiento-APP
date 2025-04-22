@@ -37,13 +37,38 @@ class ImportantMaintenanceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MaintenanceDetail(maintenanceData: maintenance)));
-      }, 
-      child: Column(
-        children: [
-          Text(maintenance.maintenance, style: TextStyle(color: Colors.black, fontSize: 20),),
-          Text(maintenance.car, style: TextStyle(color: Colors.black, fontSize: 16),),
-        ],
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MaintenanceDetail(maintenanceData: maintenance)));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: MediaQuery.of(context).size.width, 
+          height: 125,
+          child: Card(
+            child: Row(
+              children: <Widget>[
+            
+                SizedBox(width: 26,),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                  Text(maintenance.maintenance, style: TextStyle(fontSize: 20),),
+                  SizedBox(height: 5,),
+                  Container(
+                    height: 2,
+                    width: 100,
+                    color: Colors.deepOrangeAccent,
+                  ),
+                  Text(maintenance.car, style: TextStyle(fontSize: 14)),
+                  SizedBox(height: 5,),
+                  
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
