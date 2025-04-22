@@ -42,6 +42,21 @@ class _MaintenanceDetailState extends State<MaintenanceDetail> {
           ),
         ],
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Mantenimiento: ${widget.maintenanceData.maintenance}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10),
+            Text("Vehículo: ${widget.maintenanceData.car}", style: TextStyle(fontSize: 18)),
+            SizedBox(height: 10),
+            Text("Descripción: ${widget.maintenanceData.description}", style: TextStyle(fontSize: 16)),
+            SizedBox(height: 10),
+            Text("Fecha de Mantenimiento: ${widget.maintenanceData.date}", style: TextStyle(fontSize: 16)),
+          ],
+        ),
+      ),
     );
   }
 }

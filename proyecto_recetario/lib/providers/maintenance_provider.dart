@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_recetario/screens/maintenance_detail.dart';
 import '../models/maintenance_model.dart';
 import 	'package:http/http.dart' as http;
 import 'dart:convert';
@@ -40,7 +39,7 @@ class MaintenanceProvider extends ChangeNotifier {
       final url = Uri.parse('http://10.0.2.2:12346/important');
       final response = isImportant
           ? await http.delete(url, body: json.encode({"id": maintenance.id}))
-          : await http.post(url, body: json.encode(maintenance.toJson));
+          : await http.post(url, body: json.encode(maintenance.toJson()));
 
           if (response.statusCode == 200) {
             if (isImportant) {
@@ -49,7 +48,6 @@ class MaintenanceProvider extends ChangeNotifier {
               importantMaintenance.add(maintenance);
             }
             notifyListeners();
-
           } else {
             throw Exception("Error al cambiar el estado de importante");
           }

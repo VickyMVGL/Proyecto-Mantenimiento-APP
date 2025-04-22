@@ -76,14 +76,7 @@ class HomeScreen extends StatelessWidget {
           child: Card(
             child: Row(
               children: <Widget>[
-                Container(
-                  height: 125, 
-                  width: 100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset("../../assets/images/suzuki-swift.jpeg", fit: BoxFit.cover,),
-                  ),
-                ),
+            
                 SizedBox(width: 26,),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
