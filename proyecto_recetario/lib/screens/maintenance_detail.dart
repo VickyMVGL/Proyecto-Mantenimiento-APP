@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -56,17 +55,23 @@ class _MaintenanceDetailState extends State<MaintenanceDetail> with SingleTicker
         color: Colors.white,),
         actions: [
           IconButton(
-            onPressed: () async {
-              await Provider.of<MaintenanceProvider>(context, listen: false).toogleImportantStatus(widget.maintenanceData);
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                setState(() {isImportant = !isImportant;}); // Ahora es seguro.
+            icon: ScaleTransition(
+              scale: _scaleAnimation,
+              child: Icon(
+                isImportant ? Icons.star : Icons.star_border,
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {
+              final provider =
+                  Provider.of<MaintenanceProvider>(context, listen: false);
+              provider.toogleImportantStatus(widget.maintenanceData);
+              setState(() {
+                isImportant = !isImportant;
+                _controller.forward();
               });
             },
-            icon: ScaleTransition(scale: _scaleAnimation,
-             child: Icon (
-             (isImportant ? Icon(Icons.star, key: ValueKey(1), color: Colors.white,) : Icon(Icons.star_border, key: ValueKey(2), color: Colors.white,)) as IconData?,
-            )),
-          )
+          ),
         ],
       ),
       body: Padding(
