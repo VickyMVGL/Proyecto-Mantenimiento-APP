@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'maintenance_detail.dart';
-import 'package:provider/provider.dart';
-import '../providers/maintenance_provider.dart';
+import 'dart:convert';
+import 'dart:async';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,46 +15,114 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<dynamic> maintenances = [];
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
-    final maintenancesProvider = Provider.of<MaintenanceProvider>(context, listen: false);
-    maintenancesProvider.FetchMaintenances();
+    print("Inicializando HomeScreen...");
+    _fetchMaintenances();
   }
+
+  Future<void> _fetchMaintenances() async {
+  setState(() => isLoading = true);
+
+  try {
+    // 1. Construcción de la URL (mejor manejada)
+    const baseUrl = 'http://10.0.2.2:12346';
+    const endpoint = '/maintenances';
+    final uri = Uri.parse('$baseUrl$endpoint');
+
+    // 2. Petición HTTP con timeout
+    final response = await http.get(uri).timeout(const Duration(seconds: 10), onTimeout: () {
+        throw TimeoutException('La solicitud tardó demasiado');
+      });
+
+    // 3. Procesamiento de la respuesta
+    await _handleResponse(response);
+
+    } on TimeoutException catch (e) {
+      _showError('Tiempo de espera agotado: $e');
+    } on http.ClientException catch (e) {
+      _showError('Error de conexión: ${e.message}');
+    } on FormatException catch (e) {
+      _showError('Error en el formato de los datos: $e');
+    } catch (e) {
+      _showError('Error inesperado: $e');
+    } finally {
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
+    }
+  }
+
+Future<void> _handleResponse(http.Response response) async {
+  switch (response.statusCode) {
+    case 200:
+    case 201:
+      final data = _parseResponse(response.body);
+      if (mounted) {
+        setState(() => maintenances = data);
+      }
+      break;
+    case 404:
+      _showError('Endpoint no encontrado (404)');
+      break;
+    case 500:
+      _showError('Error del servidor (500)');
+      break;
+    default:
+      _showError('Error HTTP: ${response.statusCode}');
+  }
+}
+
+dynamic _parseResponse(String body) {
+  try {
+    return jsonDecode(body);
+  } on FormatException {
+    throw FormatException('Respuesta JSON inválida');
+  }
+}
+
+void _showError(String message) {
+  if (!mounted) return;
+  
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ),
+  );
+  
+  debugPrint('Error: $message');
+}
 
   @override
   Widget build(BuildContext context) {
+    print("Construyendo HomeScreen... isLoading: $isLoading");
     return Scaffold(
-      body: Consumer<MaintenanceProvider>(
-
-        builder: (context, provider, child){
-          if (provider.isLoading) {
-            return const Center(child: CircularProgressIndicator(),);
-          } else if (provider.maintenances.isEmpty) {
-            return Center(child: Text("No hay mantenimientos"),);
-          } else {
-            return ListView.builder(
-              itemBuilder: (context, index){
-                return _BuildCard(context, provider.maintenances[index]);
-              },
-              itemCount:provider.maintenances.length,
-              );
-          }  
-        }
-        ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : maintenances.isEmpty
+              ? Center(child: Text("No hay mantenimientos"))
+              : ListView.builder(
+                  itemCount: maintenances.length,
+                  itemBuilder: (context, index) {
+                    return _BuildCard(context, maintenances[index]);
+                  },
+                ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepOrangeAccent,
-        child: Icon(Icons.add, color: Colors.white,),
-        onPressed: (){
+        child: Icon(Icons.add, color: Colors.white),
+        onPressed: () {
           _showBotton(context);
         },
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeForm()));
       ),
     );
   }
 
-
-  Future<void> _showBotton(BuildContext context){
+  Future<void> _showBotton(BuildContext context) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -64,41 +133,52 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           child: MaintenanceForm(),
         ),
-      ) 
+      ),
     );
   }
 
-
-
-  Widget _BuildCard (BuildContext context, dynamic maintenance){
+  Widget _BuildCard(BuildContext context, dynamic maintenance) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MaintenanceDetail(maintenanceData: maintenance)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MaintenanceDetail(maintenanceData: maintenance),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          width: MediaQuery.of(context).size.width, 
+          width: MediaQuery.of(context).size.width,
           height: 125,
           child: Card(
             child: Row(
               children: <Widget>[
-            
-                SizedBox(width: 26,),
+                SizedBox(width: 26),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                  Text(maintenance.maintenance, style: TextStyle(fontSize: 20),),
-                  SizedBox(height: 5,),
-                  Container(
-                    height: 2,
-                    width: 100,
-                    color: Colors.deepOrangeAccent,
-                  ),
-                  Text(maintenance.car, style: TextStyle(fontSize: 14)),
-                  SizedBox(height: 5,),
-                  
+                    Text(
+                      maintenance['maintenance'] ?? 'Sin datos',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(height: 5),
+                    Container(
+                      height: 2,
+                      width: 100,
+                      color: Colors.deepOrangeAccent,
+                    ),
+                    Text(
+                      maintenance['car'] ?? 'Sin datos',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      maintenance['date'] ?? 'Sin fecha',
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
                   ],
                 ),
               ],
@@ -112,18 +192,21 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class MaintenanceForm extends StatelessWidget {
-  const MaintenanceForm({super.key});
+  MaintenanceForm({super.key});
+
+  
+
+  final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _carController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
+  final TextEditingController _mechanicController = TextEditingController();
+  final TextEditingController _maintenanceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    
-    TextEditingController _carController = TextEditingController();
-    TextEditingController _dateController = TextEditingController();
-    TextEditingController _descriptionController = TextEditingController();
-    TextEditingController _notesController = TextEditingController();
-    TextEditingController _mechanicController = TextEditingController();
-    TextEditingController _maintenanceController = TextEditingController();
 
     return Padding(padding: EdgeInsets.all(8),
     child: Form(
@@ -195,9 +278,7 @@ class MaintenanceForm extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: (){
-                if (_formKey.currentState!.validate()) {
-                Navigator.pop(context);
-                }
+                _submitForm(context);
               }
               ,
               style: ElevatedButton.styleFrom(
@@ -215,6 +296,60 @@ class MaintenanceForm extends StatelessWidget {
     ));
   }
 
+  Future<void> _submitForm(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      // Crear un mapa con los datos del formurlario
+      final formData = {
+        "car": _carController.text,
+        "maintenance": _maintenanceController.text,
+        "mechanic": _mechanicController.text,
+        "description": _descriptionController.text,
+        "date": _dateController.text,
+        "notes": _notesController.text,
+      };
+
+      print(formData); // Verifica los valores antes de enviarlos
+
+      print("Datos del formulario: $formData");
+
+      print("Car: ${_carController.text}");
+      print("Maintenance: ${_maintenanceController.text}");
+      print("Mechanic: ${_mechanicController.text}");
+      print("Description: ${_descriptionController.text}");
+      print("Date: ${_dateController.text}");
+      print("Notes: ${_notesController.text}");
+
+      try {
+        // Realizar la solicitud POST
+        final response = await http.post(
+          Uri.parse('http://10.0.2.2:12346/maintenances'), 
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode(formData),
+        );
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          // Éxito: cerrar el formulario y mostrar un mensaje
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Mantenimiento guardado con éxito")),
+          );
+        } else {
+          // Error: mostrar un mensaje
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error al guardar 2 el mantenimiento")),
+          );
+        }
+      } catch (e) {
+        // Manejo de errores
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error de conexión: $e")),
+        );
+      }
+    }
+  }
+
   Widget _builtTextField({
     required String label,
     required TextEditingController controller,
@@ -222,6 +357,7 @@ class MaintenanceForm extends StatelessWidget {
     int maxLines = 1,}) {
 
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
