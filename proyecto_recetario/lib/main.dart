@@ -44,7 +44,6 @@ class MaintenanceHistory extends StatelessWidget {
             unselectedLabelColor: Colors.white,
             tabs: [
             Tab(icon: Icon(Icons.home) , text: "Inicio",),
-            Tab(icon: Icon(Icons.taxi_alert), text: "Importante",)
           ]),
         ),
         body: TabBarView(

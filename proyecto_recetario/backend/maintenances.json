@@ -1,10 +1,18 @@
 [
   {
-    "car": "e",
-    "maintenance": "e",
-    "mechanic": "e",
-    "description": "e",
-    "date": "e",
-    "notes": "e"
+    "car": "BMW M5",
+    "maintenance": "Limpieza de Inyectores",
+    "mechanic": "Mexicanicos",
+    "description": "Se le realizo la limpieza de inyectores",
+    "date": "05-04-2025",
+    "notes": "Hay que ir pensando en reemplazar las bujias"
+  },
+  {
+    "car": "Suzuki Swift",
+    "maintenance": "Cambio de aceite",
+    "mechanic": "Mecanicos Gonzalez",
+    "description": "Se realizo cambio de aceite",
+    "date": "02-05.2025",
+    "notes": "aceite"
   }
 ]

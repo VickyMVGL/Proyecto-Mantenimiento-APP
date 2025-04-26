@@ -330,13 +330,13 @@ class MaintenanceForm extends StatelessWidget {
         );
 
         if (response.statusCode == 200 || response.statusCode == 201) {
-          // Éxito: cerrar el formulario y mostrar un mensaje
+          // cerrar el formulario y mostrar un mensaje
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Mantenimiento guardado con éxito")),
           );
         } else {
-          // Error: mostrar un mensaje
+          // mostrar un mensaje de error
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Error al guardar 2 el mantenimiento")),
           );
